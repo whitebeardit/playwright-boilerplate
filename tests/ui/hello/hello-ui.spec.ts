@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../../fixtures';
 
 test.describe('UI Hello - Playwright docs', () => {
   test.beforeEach(async ({ page }) => {

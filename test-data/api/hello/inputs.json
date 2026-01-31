@@ -1,0 +1,10 @@
+{
+  "getPost": {
+    "postId": 1
+  },
+  "createPost": {
+    "title": "Título do post",
+    "body": "Corpo do post",
+    "userId": 1
+  }
+}

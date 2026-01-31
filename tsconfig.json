@@ -7,9 +7,10 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "outDir": "dist",
     "rootDir": "."
   },
-  "include": ["tests/**/*.ts", "playwright.config.ts"],
+  "include": ["tests/**/*.ts", "playwright.config.ts", "lib/**/*.ts", "fixtures/**/*.ts", "test-data/**/*.ts", "test-data/**/*.json"],
   "exclude": ["node_modules"]
 }

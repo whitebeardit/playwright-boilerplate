@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../../fixtures';
 
 test.describe('Whitebeard - Home / Testimonial', () => {
   test.beforeEach(async ({ page }) => {

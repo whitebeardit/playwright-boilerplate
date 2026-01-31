@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { getBaseUrl } from './lib/env';
 
 export default defineConfig({
   fullyParallel: true,
@@ -14,7 +15,7 @@ export default defineConfig({
       name: 'api',
       testMatch: /tests\/api\/.*\.spec\.ts/,
       use: {
-        baseURL: 'https://jsonplaceholder.typicode.com',
+        baseURL: getBaseUrl('api'),
         extraHTTPHeaders: {
           'Content-type': 'application/json; charset=UTF-8',
         },
@@ -26,7 +27,7 @@ export default defineConfig({
       testMatch: /tests\/ui\/.*\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'https://playwright.dev',
+        baseURL: getBaseUrl('ui'),
       },
       timeout: 30000,
     },

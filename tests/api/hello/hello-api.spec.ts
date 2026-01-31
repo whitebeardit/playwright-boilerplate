@@ -1,9 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../../fixtures';
+import inputs from '../../../test-data/api/hello/inputs.json';
 
 test.describe('API Hello - JSONPlaceholder', () => {
   test('deve retornar post quando GET por id', async ({ request }) => {
     // Arrange
-    const postId = 1;
+    const { postId } = inputs.getPost;
 
     // Act
     const response = await request.get(`/posts/${postId}`);
@@ -19,11 +20,7 @@ test.describe('API Hello - JSONPlaceholder', () => {
 
   test('deve criar recurso quando POST com dados válidos', async ({ request }) => {
     // Arrange
-    const newPost = {
-      title: 'Título do post',
-      body: 'Corpo do post',
-      userId: 1,
-    };
+    const newPost = inputs.createPost;
 
     // Act
     const response = await request.post('/posts', {
