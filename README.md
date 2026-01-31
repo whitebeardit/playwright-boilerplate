@@ -1,5 +1,13 @@
 # QA – Automação de testes com Playwright
 
+![version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square&label=version)
+![CI](https://img.shields.io/github/actions/workflow/status/whitebeardit/playwright-boilerplate/.github/workflows/ci.yml?branch=main&label=ci&style=flat-square)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Node](https://img.shields.io/badge/Node-18%2B-339933?style=flat-square&logo=nodedotjs)
+![Playwright](https://img.shields.io/badge/Playwright-1.49-2EAD33?style=flat-square&logo=playwright)
+![GitHub Stars](https://img.shields.io/github/stars/whitebeardit/playwright-boilerplate?style=flat-square&logo=github)
+![GitHub Forks](https://img.shields.io/github/forks/whitebeardit/playwright-boilerplate?style=flat-square&logo=github)
+
 Automação de testes (API + UI) com Playwright para QA. Um único runner para testes de API e de tela.
 
 **Documentação detalhada:** pasta [docs/](docs/) — um arquivo por seção (estrutura, fixtures, test-data, como adicionar teste/fluxo, ambiente). Índice em [docs/README.md](docs/README.md).
@@ -187,6 +195,27 @@ O arquivo `playwright.config.ts` na raiz define:
 
 Para novos ambientes ou produtos, use as variáveis de ambiente ou ajuste os defaults em `lib/env.ts`; se necessário, crie novos projetos no config.
 
+## Versionamento (semantic-release)
+
+O **semantic-release** roda no GitHub Actions a cada push na branch **main**. Ele analisa os commits (conventional commits), calcula a próxima versão, atualiza `package.json` e gera o `CHANGELOG.md`, fazendo commit e tag no repositório.
+
+**Conventional commits** (use no título do commit):
+
+| Prefixo | Efeito na versão | Exemplo |
+|---------|------------------|---------|
+| `feat:` | Minor (1.0.0 → 1.1.0) | `feat: add login flow tests` |
+| `fix:` | Patch (1.0.0 → 1.0.1) | `fix: correct baseURL in env` |
+| `docs:`, `chore:`, `refactor:`, `test:` | Sem bump (a menos que quebre a API) | `docs: update README` |
+| `BREAKING CHANGE:` no corpo ou `!` no escopo | Major (1.0.0 → 2.0.0) | `feat!: change fixture API` |
+
+Configuração em [.releaserc.json](.releaserc.json); workflow em [.github/workflows/ci.yml](.github/workflows/ci.yml). O pacote **não** é publicado no npm (`npmPublish: false`); apenas a versão local e o changelog são atualizados.
+
 ## CI
 
-Sugestão para pipeline: rodar `npx playwright test` em cada commit ou pull request. Publicar a pasta `playwright-report/` e `test-results/` como artefatos para inspeção de falhas e traces.
+O workflow [.github/workflows/ci.yml](.github/workflows/ci.yml) roda em **push** e **pull request** na branch **main**:
+
+1. **Build** – `npm run build` (verificação TypeScript com `tsc --noEmit`)
+2. **Test** – `npm run test` (Playwright: API + UI)
+3. **Semantic Release** – só em push em main, após build e testes passarem; atualiza versão e CHANGELOG
+
+Em PRs só rodam build e testes. Para publicar relatório de falhas, adicione artefatos `playwright-report/` e `test-results/` no workflow se desejar.
