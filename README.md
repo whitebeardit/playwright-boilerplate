@@ -6,6 +6,46 @@ Automação de testes (API + UI) com Playwright para QA. Um único runner para t
 
 **Agentes / LLMs:** [AGENTS.md](AGENTS.md) — convenções, comandos e referências às docs para trabalho automatizado.
 
+## Agentes, skills e como usar
+
+O repositório usa **subagents** (em `.cursor/agents/`) e **skills** (em `.cursor/skills/`) para manter o padrão e guiar o uso do Cursor na automação de testes.
+
+### Subagents
+
+| Agente | Quando usar | O que faz |
+|--------|-------------|-----------|
+| **qa-playwright-context-assistant** | Dúvidas sobre estrutura, convenções, comandos ou documentação | Responde onde ficam fixtures, lib, test-data, tests; comandos (test, test:api, test:ui, test:headed, report, --ui); indica doc ou agente para "como adicionar X". Não edita código. |
+| **qa-playwright-add-test-assistant** | Adicionar um novo teste (API ou UI) | Aplica a skill qa-playwright-add-new-test; garante import de fixtures, uso de test-data, Arrange-Act-Assert; API usa `request`, UI usa `page` e locators resilientes. |
+| **qa-playwright-add-flow-assistant** | Adicionar um novo fluxo (pastas, dados, specs) | Aplica a skill qa-playwright-add-new-flow; cria tests/api/\<fluxo\>/, tests/ui/\<fluxo\>/, test-data quando houver inputs, inputs.json, opcional builder.ts, specs a partir de fixtures. |
+| **qa-playwright-maintain-assistant** | Editar specs, refatorar ou alinhar ao padrão | Aplica a skill qa-playwright-maintain-conventions; garante import de fixtures, preferência por test-data, estrutura tests/ e test-data/, baseURL via lib/env. |
+| **qa-playwright-add-data-assistant** | Adicionar ou estender dados de teste (inputs, builder) | Aplica a skill qa-playwright-add-test-data; cria/edita inputs.json e opcional builder.ts em test-data; usa lib/data-factory para dados variáveis. |
+| **qa-playwright-add-fixture-assistant** | Adicionar ou estender fixture em fixtures/index.ts | Aplica a skill qa-playwright-add-fixture; edita só fixtures/index.ts com test.extend; mantém export de test e expect. |
+
+### Skills
+
+As skills são instruções reutilizáveis que os agentes aplicam. Ficam em `.cursor/skills/<nome>/SKILL.md`.
+
+| Skill | Descrição |
+|-------|------------|
+| **qa-playwright-add-new-test** | Convenções para novo teste: import de fixtures, test-data quando aplicável, Arrange-Act-Assert; API com `request`, UI com `page` e locators resilientes. |
+| **qa-playwright-add-new-flow** | Checklist para novo fluxo: pastas em tests/ e test-data/, inputs.json, opcional builder.ts, specs importando de fixtures, baseURL se outro domínio. |
+| **qa-playwright-maintain-conventions** | Ao editar: import só de fixtures, dados em test-data, estrutura de pastas, baseURL via lib/env, locators e assertions web-first. |
+| **qa-playwright-add-test-data** | Onde e como criar inputs.json e builder.ts em test-data; uso de lib/data-factory (randomEmail, randomString, randomNumber). |
+| **qa-playwright-add-fixture** | Como adicionar/estender fixture em fixtures/index.ts (test.extend), exemplos (inputs por fluxo, authenticatedRequest), regras (manter test e expect). |
+
+### Como usar no Cursor
+
+1. **Por tarefa:** Descreva o que quer e mencione o agente quando fizer sentido, por exemplo:
+   - *"Adicione um teste de API para o endpoint /users usando o qa-playwright-add-test-assistant"*
+   - *"Quero um novo fluxo de login; use o add-flow-assistant"*
+   - *"Onde fica a documentação de comandos? (context-assistant)"*
+
+2. **@-menção:** No chat do Cursor, use **@** e selecione o agente (ex.: `@qa-playwright-add-test-assistant`) para que as respostas sigam o papel e as instruções daquele agente.
+
+3. **Skills:** As skills são usadas automaticamente pelos agentes. Se quiser seguir o checklist manualmente, abra o arquivo `.cursor/skills/<nome>/SKILL.md` correspondente.
+
+4. **Documentação:** Para detalhes de cada tema (estrutura, fixtures, test-data, novo teste, novo fluxo, ambiente, comandos), use a pasta [docs/](docs/) e o [AGENTS.md](AGENTS.md).
+
 ## Pré-requisitos
 
 - Node.js 18+
