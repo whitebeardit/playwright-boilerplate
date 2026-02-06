@@ -1,0 +1,17 @@
+{
+  "baseUrl": "https://stagepartners.quero.io/",
+  "login": {
+    "conta": "6967aa982fcfc0329b565080",
+    "usuario": "idelmario",
+    "senha": "idelmario"
+  },
+  "produto": {
+    "nome": "Produto teste QA",
+    "descricao": "Descrição do produto criado pelo teste automatizado",
+    "categoria": "Outros"
+  },
+  "categoria": {
+    "nome": "Categoria teste QA",
+    "descricao": "Descrição da categoria criada pelo teste automatizado"
+  }
+}
